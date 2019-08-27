@@ -155,11 +155,22 @@ public class non_mood_part extends AppCompatActivity {
                 //long t_start =  Long.parseLong(event_array[0]);
                 //long t_end =  Long.parseLong(event_array[1]);
 
-                long t_start = ((Number) jsonObject.get("start_date")).longValue();//.toString();
-                long t_end = ((Number) jsonObject.get("end_date")).longValue();//.toString();
-                String title = "Ana sleep"; //
-                String description = "I want to sleep";
-                my_calendar.addCalendarEvent(this, title, description, t_start, t_end, t_start+10*60, 1);
+
+                String t1 = jsonObject.get("start_time").toString();
+                String t2 = jsonObject.get("end_time").toString();
+                String d1 = jsonObject.get("start_date").toString();
+                String d2 = jsonObject.get("end_date").toString();
+
+
+                //long t_start = ((Number) jsonObject.get("start_date")).longValue();//.toString();
+                //long t_end = ((Number) jsonObject.get("end_date")).longValue();//.toString();
+
+                long t_start = 1564581600; //Long.parseLong(t1);
+                long t_end = 1564581600; //Long.parseLong(t2);
+
+                String title = "du zi mo6"; //
+                String description = "ping lan";
+                my_calendar.addCalendarEvent(this, title, description, d1,d2,t1,t2,t_start+10*60, 1);
 
                 //CalendarContentResolver my2_calender = CalendarContentResolver(contex);
 

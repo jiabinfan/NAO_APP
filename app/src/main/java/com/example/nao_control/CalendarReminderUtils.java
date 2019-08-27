@@ -65,7 +65,6 @@ public class CalendarReminderUtils {
         }
     }
 
-
     private static long addCalendarAccount(Context context) {
         TimeZone timeZone = TimeZone.getDefault();
         ContentValues value = new ContentValues();
@@ -114,12 +113,10 @@ public class CalendarReminderUtils {
 
             if (cursor.getString(1).equals(calenderEmaillAddress))
                 calenderId=cursor.getInt(0); //youre calender id to be insered in above your code
-
-
         }
         return calenderId;
     }
-    public void addCalendarEvent(Context context, String title, String description,long start_t, long end_t, long reminderTime, int previousDate) {
+    public void addCalendarEvent(Context context, String title, String description,String d1, String d2, String t1, String t2, long reminderTime, int previousDate) {
         if (context == null) {
             return;
         }
@@ -130,11 +127,38 @@ public class CalendarReminderUtils {
         }
 
         //添加日历事件
-        Calendar mCalendar = Calendar.getInstance();
+        //Calendar mCalendar = Calendar.getInstance();
+        /*
         mCalendar.setTimeInMillis(reminderTime);//设置开始时间
         long start = mCalendar.getTime().getTime();
         mCalendar.setTimeInMillis(start + 10 * 60 * 1000);//设置终止时间，开始时间加10分钟
         long end = mCalendar.getTime().getTime();
+        */
+        String[] s_d = d1.split("-");
+        int s_y = Integer.parseInt(s_d[0]);
+        int s_m = Integer.parseInt(s_d[1]);
+        int s_day = Integer.parseInt(s_d[2]);
+
+        String[] e_d = d2.split("-");
+        int e_y = Integer.parseInt(e_d[0]);
+        int e_m = Integer.parseInt(e_d[1]);
+        int e_day = Integer.parseInt(e_d[2]);
+
+        String[] s_t = t1.split(":");
+        int s_h = Integer.parseInt(s_t[0]);
+        int s_min = Integer.parseInt(s_t[1]);
+
+        String[] e_t = t2.split(":");
+        int e_h = Integer.parseInt(e_t[0]);
+        int e_min = Integer.parseInt(e_t[1]);
+
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(s_y, s_m-1, s_day, s_h, s_min);
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(e_y, e_m-1, e_day, e_h, e_min);
+        long start = startTime.getTimeInMillis();
+        long end = endTime.getTimeInMillis();
+
         ContentValues event = new ContentValues();
         event.put("title", title);
         event.put("description", description);

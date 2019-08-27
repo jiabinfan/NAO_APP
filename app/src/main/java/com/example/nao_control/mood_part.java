@@ -163,17 +163,21 @@ public class mood_part extends AppCompatActivity {
                 //long t_start = cal.getTime().getTime(); // Long.parseLong("String")
                 //long t_end = cal.getTime().getTime()+10*60; //Long.parseLong("String")
 
-                String t1 = jsonObject.get("start_date").toString();
-                String t2 = jsonObject.get("end_date").toString();
+                String t1 = jsonObject.get("start_time").toString();
+                String t2 = jsonObject.get("end_time").toString();
+                String d1 = jsonObject.get("start_date").toString();
+                String d2 = jsonObject.get("end_date").toString();
+
+
                 //long t_start = ((Number) jsonObject.get("start_date")).longValue();//.toString();
                 //long t_end = ((Number) jsonObject.get("end_date")).longValue();//.toString();
 
-                long t_start = 1664581600; //Long.parseLong(t1);
-                long t_end = 1664581600; //Long.parseLong(t2);
+                long t_start = 1564581600; //Long.parseLong(t1);
+                long t_end = 1564581600; //Long.parseLong(t2);
 
-                String title = "what the hell"; //
-                String description = "920202020";
-                my_calendar.addCalendarEvent(this, title, description, t_start, t_end, t_start+10*60, 1);
+                String title = jsonObject.get("title").toString(); //
+                String description = "du zi mo ping lan";
+                my_calendar.addCalendarEvent(this, title, description, d1,d2,t1,t2,t_start+10*60, 1);
 
                 //CalendarContentResolver my2_calender = CalendarContentResolver(contex);
 
