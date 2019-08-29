@@ -183,11 +183,15 @@ public class non_mood_part extends AppCompatActivity {
                 Thevalue = jsonObject.getString(jsonObject.names().get(3).toString());
 
                 calendar my2_cal = new calendar();
-                long start_time=0;
-                long end_time=0;
 
-                JSONArray json_event = my2_cal.getcalendar(this,start_time,end_time);
+                String t1 = jsonObject.get("start_time").toString();
+                String t2 = jsonObject.get("end_time").toString();
+                String d1 = jsonObject.get("start_date").toString();
+                String d2 = jsonObject.get("end_date").toString();
 
+
+
+                JSONArray json_event = my2_cal.getcalendar(this, d1, d2, t1, t2);
 
                 user_Sorket socket2 = new user_Sorket();
                 socket2.setJsonArray(json_event);

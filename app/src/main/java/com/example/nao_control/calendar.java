@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class calendar {
@@ -19,13 +20,37 @@ public class calendar {
     private static TelephonyManager mTm;
 
 
-    public JSONArray getcalendar(Context context, long input_start, long input_end) {
+    public JSONArray getcalendar(Context context, String d1, String d2, String t1, String t2) {
         String startTime = "";
         String endTime = "";
         String eventTitle = "";
         String description = "";
         String location = "";
 
+        String[] s_d = d1.split("-");
+        int s_y = Integer.parseInt(s_d[0]);
+        int s_m = Integer.parseInt(s_d[1]);
+        int s_day = Integer.parseInt(s_d[2]);
+
+        String[] e_d = d2.split("-");
+        int e_y = Integer.parseInt(e_d[0]);
+        int e_m = Integer.parseInt(e_d[1]);
+        int e_day = Integer.parseInt(e_d[2]);
+
+        String[] s_t = t1.split(":");
+        int s_h = Integer.parseInt(s_t[0]);
+        int s_min = Integer.parseInt(s_t[1]);
+
+        String[] e_t = t2.split(":");
+        int e_h = Integer.parseInt(e_t[0]);
+        int e_min = Integer.parseInt(e_t[1]);
+
+        Calendar start_Time = Calendar.getInstance();
+        start_Time.set(s_y, s_m-1, s_day, s_h, s_min);
+        Calendar end_Time = Calendar.getInstance();
+        end_Time.set(e_y, e_m-1, e_day, e_h, e_min);
+        long start = start_Time.getTimeInMillis();
+        long end = end_Time.getTimeInMillis();
 
         JSONArray arr = new JSONArray();
         Cursor eventCursor = context.getContentResolver().query(Uri.parse(CALENDER_EVENT_URL), null, null, null, null);
@@ -38,7 +63,7 @@ public class calendar {
             long unix_end = Long.parseLong(eventCursor.getString(eventCursor.getColumnIndex("dtend")));
             startTime = timeStamp2Date(Long.parseLong(eventCursor.getString(eventCursor.getColumnIndex("dtstart"))));
             endTime = timeStamp2Date(Long.parseLong(eventCursor.getString(eventCursor.getColumnIndex("dtend"))));
-            //if (input_start >= unix_start && input_end <= unix_end) {
+            if (start <= unix_start && end >= unix_end) {
                 try {
                     json.put("eventTitle", eventTitle);
                     json.put("description", description);
@@ -49,8 +74,7 @@ public class calendar {
                     e.printStackTrace();
                 }
                 arr.put(json);
-            //}
-
+            }
         }
         return arr;
 
