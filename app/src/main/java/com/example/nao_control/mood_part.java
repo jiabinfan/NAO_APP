@@ -214,7 +214,7 @@ public class mood_part extends AppCompatActivity {
                 //socket.setIp(this.sever_ip);
                 //socket2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-                String json_message = "";
+                String json_message = "1";
 
                 for (int i = 0; i < json_event.length(); i++) {
                     JSONObject o = json_event.getJSONObject(i);
