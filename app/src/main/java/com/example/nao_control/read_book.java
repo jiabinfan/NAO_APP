@@ -1,10 +1,11 @@
 package com.example.nao_control;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
-
+import android.os.Handler;
 import java.util.Locale;
 
 public class read_book extends AsyncTask<String, Void, String> {
@@ -16,7 +17,6 @@ public class read_book extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-
         mTTS = new TextToSpeech(mainActivity, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int i) {
@@ -28,13 +28,23 @@ public class read_book extends AsyncTask<String, Void, String> {
                 } else {
                     Log.d("TTS", "Initilization Failed!");
                 }
-
-                mTTS.speak("read book", TextToSpeech.QUEUE_FLUSH, null);
+                mTTS.speak(sentences[0], TextToSpeech.QUEUE_FLUSH, null);
             }
         });
-        for (int i = 0; i < sentences.length; i++) {
+
+        for (int i = 1; i < sentences.length; i++) {
             if (!receive_stop()){
-                mTTS.speak(sentences[i], TextToSpeech.QUEUE_FLUSH, null);
+                mTTS.speak(sentences[i], TextToSpeech.QUEUE_ADD, null);
+
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Do something after 5s = 5000ms
+                        //buttons[inew][jnew].setBackgroundColor(Color.BLACK);
+                    }
+                }, 10000);
             } else {
                 book_index = i;
                 break;
