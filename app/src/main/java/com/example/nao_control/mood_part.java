@@ -316,11 +316,11 @@ public class mood_part extends AppCompatActivity {
         read.set_context(this);
         read.set_sentence(sentences);
         read.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-        user_Sorket socket_book = new user_Sorket();
-        socket_book.setMessage(Integer.toString(read.get_index()));
-        socket_book.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
+        if (speech_input.contains("stop")) {
+            user_Sorket socket_book = new user_Sorket();
+            socket_book.setMessage(Integer.toString(read.get_index()));
+            socket_book.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
         txvResult2.setText(book);
     }
 

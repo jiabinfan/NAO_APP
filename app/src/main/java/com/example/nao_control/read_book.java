@@ -7,6 +7,7 @@ import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.os.Handler;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class read_book extends AsyncTask<String, Void, String> {
     private TextToSpeech mTTS;
@@ -14,7 +15,8 @@ public class read_book extends AsyncTask<String, Void, String> {
     private int this_stop = 0;
     private String sentences[];
     private int book_index = 0;
-
+    private Handler setDelay;
+    private Runnable startDelay;
     @Override
     protected String doInBackground(String... params) {
         mTTS = new TextToSpeech(mainActivity, new TextToSpeech.OnInitListener() {
@@ -36,17 +38,15 @@ public class read_book extends AsyncTask<String, Void, String> {
             if (!receive_stop()){
                 mTTS.speak(sentences[i], TextToSpeech.QUEUE_ADD, null);
 
-
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Do something after 5s = 5000ms
-                        //buttons[inew][jnew].setBackgroundColor(Color.BLACK);
-                    }
-                }, 10000);
+                //setDelay = new Handler();
+                try{
+                TimeUnit.SECONDS.sleep(8);
+                }catch (Exception e){
+                    mTTS.speak("Something wrong here", TextToSpeech.QUEUE_FLUSH, null);
+                }
             } else {
                 book_index = i;
+
                 break;
             }
 
@@ -78,4 +78,6 @@ public class read_book extends AsyncTask<String, Void, String> {
     public int get_index(){
         return book_index;
     }
+
+
 }

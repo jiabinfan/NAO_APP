@@ -18,7 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class user_Sorket extends AsyncTask<String, Void, String> {
-    private String IP_add = "192.168.0.102";
+    private String IP_add = "192.168.0.102"; // laptop's ip
     int port_num = 9559;
     private Socket client;
     PrintWriter printWriter;
