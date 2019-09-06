@@ -6,10 +6,19 @@ import android.os.AsyncTask;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.os.Handler;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class read_book extends AsyncTask<String, Void, String> {
+    private String IP_add = "192.168.0.102"; // laptop's ip
+    private int port_num = 9559;
+    private Socket client;
+
     private TextToSpeech mTTS;
     private Context mainActivity;
     private int this_stop = 0;
@@ -30,24 +39,37 @@ public class read_book extends AsyncTask<String, Void, String> {
                 } else {
                     Log.d("TTS", "Initilization Failed!");
                 }
-                mTTS.speak(sentences[0], TextToSpeech.QUEUE_FLUSH, null);
+                //mTTS.speak(sentences[0], TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
-        for (int i = 1; i < sentences.length; i++) {
+        for (int i = 0; i < sentences.length; i++) {
             if (!receive_stop()){
                 mTTS.speak(sentences[i], TextToSpeech.QUEUE_ADD, null);
 
                 //setDelay = new Handler();
                 try{
-                TimeUnit.SECONDS.sleep(8);
+                    TimeUnit.SECONDS.sleep(8);
                 }catch (Exception e){
                     mTTS.speak("Something wrong here", TextToSpeech.QUEUE_FLUSH, null);
                 }
             } else {
+                try{
                 book_index = i;
+                client = new Socket(IP_add, port_num);
 
+                //BufferedOutputStream cmdOutput = new BufferedOutputStream(client.getOutputStream(), port_num);
+                OutputStream out = client.getOutputStream();
+                PrintWriter output = new PrintWriter(out);
+                output.println(Integer.toString(i));
+
+                output.close();
+                out.close();
+                client.close();
                 break;
+                }catch (IOException e){
+                    mTTS.speak("Something wrong here", TextToSpeech.QUEUE_FLUSH, null);
+                }
             }
 
         }
