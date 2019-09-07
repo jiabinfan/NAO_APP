@@ -7,6 +7,8 @@ import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.os.Handler;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -43,7 +45,7 @@ public class read_book extends AsyncTask<String, Void, String> {
             }
         });
 
-        for (int i = 0; i < sentences.length; i++) {
+        for (int i = book_index; i < sentences.length; i++) {
             if (!receive_stop()){
                 mTTS.speak(sentences[i], TextToSpeech.QUEUE_ADD, null);
 
@@ -61,7 +63,14 @@ public class read_book extends AsyncTask<String, Void, String> {
                 //BufferedOutputStream cmdOutput = new BufferedOutputStream(client.getOutputStream(), port_num);
                 OutputStream out = client.getOutputStream();
                 PrintWriter output = new PrintWriter(out);
-                output.println(Integer.toString(i));
+
+
+                JSONObject json_send = new JSONObject();
+                json_send.put("message",mood_part.speech_input);
+                json_send.put("emotion","");
+                json_send.put("bookname","Harry Potter");
+                json_send.put("booksentenceindex",Integer.toString(book_index));
+                output.println(json_send.toString());
 
                 output.close();
                 out.close();
@@ -69,6 +78,9 @@ public class read_book extends AsyncTask<String, Void, String> {
                 break;
                 }catch (IOException e){
                     mTTS.speak("Something wrong here", TextToSpeech.QUEUE_FLUSH, null);
+                }catch ( Exception e){
+                    mTTS.speak("Something wrong here", TextToSpeech.QUEUE_FLUSH, null);
+
                 }
             }
 
@@ -97,8 +109,8 @@ public class read_book extends AsyncTask<String, Void, String> {
             return false;
         }
     }
-    public int get_index(){
-        return book_index;
+    public void set_index(String index){
+        book_index = Integer.parseInt(index);
     }
 
 

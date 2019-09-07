@@ -145,13 +145,6 @@ public class mood_part extends AppCompatActivity {
                 startActivity(new Intent(Intent.ACTION_VIEW, uri));
 
 
-            } if (!jsonObject.get("response").equals("")){//jsonObject.names().get(2).toString().equals("speech") && !jsonObject.getString(jsonObject.names().get(2).toString()).equals("")) {
-                //Toast.makeText(this, jsonObject.getString(jsonObject.names().get(2).toString()), Toast.LENGTH_SHORT).show();
-
-                Thevalue = jsonObject.get("response").toString();
-                intent_speech.putExtra(EXTRA_MESSAGE, Thevalue);
-                startActivity(intent_speech);
-
             } if (jsonObject.get("action").equals("reminder")){//jsonObject.names().get(1).toString().equals("text") && !jsonObject.getString(jsonObject.names().get(1).toString()).equals("")) {
 
                 Thevalue ="Anna say: "+ jsonObject.getString(jsonObject.names().get(1).toString());
@@ -282,12 +275,10 @@ public class mood_part extends AppCompatActivity {
             }
             if (jsonObject.get("action").equals("read_book")){//.names().get(0).toString().equals("read_book") && !jsonObject.getString(jsonObject.names().get(5).toString()).equals("")){
 
-                Thevalue = jsonObject.getString(jsonObject.names().get(5).toString());  // paragraph to be read
-
-
-
+                Thevalue = jsonObject.getString(jsonObject.names().get(0).toString());  // paragraph to be read
+                String book_index = jsonObject.get("booksentenceindex").toString();
                 mTTS.setLanguage(Locale.CANADA);
-                read_books(Thevalue);
+                read_books(book_index);
 
             }
             if (jsonObject.get("action").equals("stop")){//.names().get(6).toString().equals("stop") && !jsonObject.getString(jsonObject.names().get(5).toString()).equals("stop reading")){
@@ -301,12 +292,20 @@ public class mood_part extends AppCompatActivity {
                 socket2.setMessage("stop reading");
                 socket2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
+            if (!jsonObject.get("response").equals("")){//jsonObject.names().get(2).toString().equals("speech") && !jsonObject.getString(jsonObject.names().get(2).toString()).equals("")) {
+                //Toast.makeText(this, jsonObject.getString(jsonObject.names().get(2).toString()), Toast.LENGTH_SHORT).show();
+
+                Thevalue = jsonObject.get("response").toString();
+                intent_speech.putExtra(EXTRA_MESSAGE, Thevalue);
+                startActivity(intent_speech);
+
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-    private void read_books(String book_text){
+    private void read_books(String book_index){
 
         //mTTS.speak(book_text, TextToSpeech.QUEUE_FLUSH, null);
 
@@ -314,13 +313,15 @@ public class mood_part extends AppCompatActivity {
         String[] sentences = book.split("&");
         read_book read = new read_book();
         read.set_context(this);
+        read.set_index(book_index);
         read.set_sentence(sentences);
+
         read.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-        user_Sorket socket_book = new user_Sorket();
-        int i = read.get_index();
-        socket_book.setMessage(Integer.toString(read.get_index()));
-        socket_book.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        //user_Sorket socket_book = new user_Sorket();
+        //int i = read.get_index();
+        //socket_book.setMessage(Integer.toString(read.get_index()));
+        //socket_book.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         txvResult2.setText(book);
     }
 
