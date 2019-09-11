@@ -136,10 +136,12 @@ public class mood_part extends AppCompatActivity {
             jsonObject = new JSONObject(json);
             txvResult.setText(json);
 
-            if (jsonObject.get("action").equals("url")){//jsonObject.names().get(0).toString().equals("url") && jsonObject.getString(jsonObject.names().get(0).toString()).substring(0, 4).equals("http")) {
+            if (jsonObject.get("action").equals("fetch_recipe")){//jsonObject.names().get(0).toString().equals("url") && jsonObject.getString(jsonObject.names().get(0).toString()).substring(0, 4).equals("http")) {
                 //Toast.makeText(this, "do not suuport", Toast.LENGTH_SHORT).show();
 
-                Thevalue = jsonObject.getString(jsonObject.names().get(0).toString());
+                //Thevalue = jsonObject.getString(jsonObject.names().get(0).toString());
+
+                Thevalue = jsonObject.get("url").toString();
                 Uri uri = Uri.parse(Thevalue);
 
                 startActivity(new Intent(Intent.ACTION_VIEW, uri));
